@@ -11,3 +11,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+#md-react-app {
+  width: 100%;
+  margin: 0;
+  max-width: unset;
+}
