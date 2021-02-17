@@ -65,9 +65,13 @@ function App() {
             <span>Totalt pris: </span>
             {`${selectedData &&
               Object.entries(selectedData).reduce((acc, curr) => {
+                let total = 0;
                 if (curr[1].selection.item.pris)
-                  return acc + curr[1].selection.item.pris;
-                return acc;
+                  total += curr[1].selection.item.pris;
+                if (curr[1].subSelection && curr[1].subSelection.item.pris) {
+                  total += curr[1].subSelection.item.pris;
+                }
+                return acc + total;
               }, 0)}kr`}
           </Total>
         </Wrapper>

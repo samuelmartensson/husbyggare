@@ -78,9 +78,11 @@ export default function SubCategory({ data, categoryKey }) {
                 obj={product}
                 title={product.title}
                 imgSrc={
-                  product.bild ? product.bild.sourceUrl : PlaceholderImage
+                  product.item.bild
+                    ? product.item.bild.sourceUrl
+                    : PlaceholderImage
                 }
-                price={product.pris}
+                price={product.item.pris}
                 isSelected={product === selectedData[categoryKey].subSelection}
                 setIsSelected={setIsSelected}
                 isSubItem={true}
