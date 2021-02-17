@@ -1,28 +1,34 @@
-import React, { useState, useEffect, createContext } from "react";
-import { fetchAPI } from "./utils/api";
-import { houseByName } from "./queries";
-import CategoryList from "./components/CategoryList";
-import PlaceholderImage from "./media/placeholder.png";
-import styled from "styled-components";
-import ProductCard from "./components/ProductCard";
+import React, { useState, useEffect, createContext } from 'react';
+import { fetchAPI } from './utils/api';
+import { houseByName } from './queries';
+import CategoryList from './components/CategoryList';
+import PlaceholderImage from './media/placeholder.png';
+import styled from 'styled-components';
+import ProductCard from './components/ProductCard';
 
 export const DataContext = createContext();
 
 function App() {
   const [selectedData, setSelectedData] = useState();
   const [categories, setCategories] = useState([]);
-  useEffect(async () => {
-    const data = await fetchAPI(houseByName("Attefalls"));
-    const array = Object.entries(data.houses.edges[0].node.house_types).map(
-      item => {
-        const [key, value] = item;
-        return {
-          name: key,
-          items: Object.entries(value).map(j => ({ name: j[0], items: j[1] }))
-        };
-      }
-    );
-    setCategories(array);
+  useEffect(() => {
+    async function fetchData() {
+      const data = await fetchAPI(houseByName('Attefalls'));
+      const array = Object.entries(data.houses.edges[0].node.house_types).map(
+        (item) => {
+          const [key, value] = item;
+          return {
+            name: key,
+            items: Object.entries(value).map((j) => ({
+              name: j[0],
+              items: j[1],
+            })),
+          };
+        }
+      );
+      setCategories(array);
+    }
+    fetchData();
   }, []);
   return (
     <DataContext.Provider value={{ selectedData, setSelectedData }}>
@@ -30,7 +36,7 @@ function App() {
         <CategoryList data={categories} />
         <Wrapper>
           {selectedData &&
-            Object.entries(selectedData).map(item => {
+            Object.entries(selectedData).map((item) => {
               const [key, value] = item;
 
               return (
@@ -63,7 +69,8 @@ function App() {
             })}
           <Total>
             <span>Totalt pris: </span>
-            {`${selectedData &&
+            {`${
+              selectedData &&
               Object.entries(selectedData).reduce((acc, curr) => {
                 let total = 0;
                 if (curr[1].selection.item.pris)
@@ -72,7 +79,8 @@ function App() {
                   total += curr[1].subSelection.item.pris;
                 }
                 return acc + total;
-              }, 0)}kr`}
+              }, 0)
+            }kr`}
           </Total>
         </Wrapper>
       </div>
